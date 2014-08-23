@@ -2,6 +2,7 @@
 
 # Standard imports
 import sys, getopt
+from os.path import isfile,isdir, join, basename
 
 # Mconverter imports
 from mconverter.movieconverter import MovieConverter
@@ -25,13 +26,24 @@ class movie_converter(object):
     @staticmethod
     def initDB():
         ConvDB = ConverterDB(config.mc_db_path)
-        ConvDB.initDB()
-        print("Database is initialized")
+
+        if isfile(config.mc_db_path):
+            print("Database file is already present.")
+            print("Would you confirm removal of database file ? (y/n)")
+            answer = input()
+
+            if answer =="y":
+                ConvDB.initDB()
+                print("Database is initialized")
+            else:
+                print("No confirmation given. Initialization aborted.")
+        else:
+            ConvDB.initDB()
 
     @staticmethod
     def convert():
         converter = MovieConverter(config.mc_folder_in,config.mc_folder_out)
-        converter.prepareFiles()
+        converter.prepareFiles(None)
         converter.processFiles()
 
 

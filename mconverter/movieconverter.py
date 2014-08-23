@@ -7,7 +7,7 @@ import os
 import shutil
 
 from os import listdir
-from os.path import isfile, join, basename
+from os.path import isfile,isdir, join, basename
 
 from mconverter.moviefile import MovieFile
 from mconverter.movieconverterDB import ConverterDB
@@ -27,33 +27,41 @@ class MovieConverter(object):
 		 #print(onlyfiles)
 
 
-	def prepareFiles(self):
-		dirs = listdir(self.infolder);
+	def prepareFiles(self,filePath):
+
+		if filePath is None:
+			filePath = self.infolder
+
+		dirs = listdir(filePath);
 		pathfile = ""
 		md5tool = hashlib.md5()
 
 
 		# Calculate MD5Sum for this file
 		for file in dirs:
-			if not file.startswith('.'):
-				pathfile = join(self.infolder,file)
-				print(file,pathfile)
+			pathfile = join(filePath,file)
+			if isdir(pathfile):
+				self.prepareFiles(pathfile)
+			else:
+				if not file.startswith('.'):
+
+					print(file,pathfile)
 
 
-				with open(pathfile,"rb") as file_to_check:
-					data = file_to_check.read()
-					md5_returned = hashlib.md5(data).hexdigest()
-					movFile = MovieFile(file,pathfile,md5_returned)
+					with open(pathfile,"rb") as file_to_check:
+						data = file_to_check.read()
+						md5_returned = hashlib.md5(data).hexdigest()
+						movFile = MovieFile(file,pathfile,md5_returned)
 
-					# Check if MD5 file is already in database
-					ConvDB = ConverterDB()
-					getNameFromDB = ConvDB.getMovieInfo(md5_returned)
-					if getNameFromDB is not None:
-						print("MD5 is already in database. File ignored...");
-						print("NameFromDB:",getNameFromDB)
-					else:
-						ConvDB.insertMovie(movFile)
-						MovieConverter.files.append(movFile)
+						# Check if MD5 file is already in database
+						ConvDB = ConverterDB()
+						getNameFromDB = ConvDB.getMovieInfo(md5_returned)
+						if getNameFromDB is not None:
+							print("MD5 is already in database. File ignored...");
+							print("NameFromDB:",getNameFromDB)
+						else:
+							ConvDB.insertMovie(movFile)
+							MovieConverter.files.append(movFile)
 
 	def processFiles(self):
 		"""
@@ -94,8 +102,6 @@ class MovieConverter(object):
 		print ("Converted.                [DONE]")
 
 		# Once converted, we move original file to 'Done' folder
-
-
 		shutil.move(mFile.path,config.mc_folder_conv)
 
 
