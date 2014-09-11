@@ -1,9 +1,9 @@
 # All movie-converter properties are prefixed 'mc-'
 
 # Folders
-mc_folder_in  = "/Users/matt/Movies/mconverter/in"
-mc_folder_out = "/Users/matt/Movies/mconverter/out"
-mc_folder_conv= "/Users/matt/Movies/mconverter/converted"
+mc_folder_in  = "/home/samsung/Videos/input"
+mc_folder_out = "/home/samsung/Videos/output"
+mc_folder_conv= "/home/samsung/Videos/converted"
 
 # Database path
 mc_db_path = "./db/movieconverter.db"

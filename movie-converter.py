@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Standard imports
-import sys, getopt
+import sys, getopt, os
 from os.path import isfile,isdir, join, basename
 
 # Mconverter imports
@@ -33,6 +33,7 @@ class movie_converter(object):
             answer = input()
 
             if answer =="y":
+                os.remove(config.mc_db_path)
                 ConvDB.initDB()
                 print("Database is initialized")
             else:
