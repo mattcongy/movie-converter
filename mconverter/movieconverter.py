@@ -26,6 +26,14 @@ class MovieConverter(object):
 		 onlyfiles = [ f for f in listdir(self.infolder) if isfile(join(self.infolder,f)) ]
 		 #print(onlyfiles)
 
+	def md5_for_file(self,f, block_size=32768):
+	    md5 = hashlib.md5()
+	    while True:
+	        data = f.read(block_size)
+	        if not data:
+	            break
+	        md5.update(data)
+	    return md5.digest()
 
 	def prepareFiles(self,filePath):
 
@@ -47,10 +55,9 @@ class MovieConverter(object):
 
 					print(file,pathfile)
 
-
+					# Read only 128-bytes of file to update MD5.
 					with open(pathfile,"rb") as file_to_check:
-						data = file_to_check.read()
-						md5_returned = hashlib.md5(data).hexdigest()
+						md5_returned = self.md5_for_file(file_to_check)
 						movFile = MovieFile(file,pathfile,md5_returned)
 
 						# Check if MD5 file is already in database
@@ -62,6 +69,12 @@ class MovieConverter(object):
 						else:
 							ConvDB.insertMovie(movFile)
 							MovieConverter.files.append(movFile)
+
+					#with open(pathfile,"rb") as file_to_check:
+					#	data = file_to_check.read()
+					#	md5_returned = hashlib.md5(data).hexdigest()
+					#	movFile = MovieFile(file,pathfile,md5_returned)
+
 
 	def processFiles(self):
 		"""
