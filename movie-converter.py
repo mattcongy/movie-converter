@@ -6,10 +6,14 @@ from os.path import isfile,isdir, join, basename
 
 # Mconverter imports
 from mconverter.movieconverter import MovieConverter
-from mconverter import config
+from mconverter import config, moviepresetimporter
 from mconverter.movieconverterDB import ConverterDB
 
+
 class movie_converter(object):
+
+    preset = config.mc_video_audio_preset
+    converter = MovieConverter(config.mc_folder_in,config.mc_folder_out)
     """docstring for movie-converter"""
     def __init__(self, arg):
         super(movie-converter, self).__init__()
@@ -22,6 +26,7 @@ class movie_converter(object):
         print(" -i --init     : Initialize embedded database")
         print(" -c --convert  : Launch conversion with config.py parameters")
         print(" -d --display  : Display configuration parameters")
+        print(" -p --preset   : Name of preset to use")
 
     @staticmethod
     def initDB():
@@ -43,14 +48,19 @@ class movie_converter(object):
 
     @staticmethod
     def convert():
-        converter = MovieConverter(config.mc_folder_in,config.mc_folder_out)
-        converter.prepareFiles(None)
-        converter.processFiles()
+        movie_converter.converter.setPreset(movie_converter.preset)
+        movie_converter.converter.prepareFiles(None)
+        movie_converter.converter.processFiles()
+
+    @staticmethod
+    def loadpreset(presetName):
+        preset = moviepresetimporter.importPreset(presetName)
+
 
 
 def main(argv):
    try:
-      opts, args = getopt.getopt(argv,"hdi",["init","display","convert"])
+      opts, args = getopt.getopt(argv,"hdip:",["init","display","convert","preset="])
    except getopt.GetoptError:
       movie_converter.printHelp()
       sys.exit(2)
@@ -62,7 +72,12 @@ def main(argv):
          movie_converter.initDB()
       elif opt in ("-d", "--display"):
          config.print_configuration()
-      elif opt in ("-c", "--convert"):
+
+      if opt in ("-p", "--preset"):
+        print("Preset selected : ",arg)
+        movie_converter.loadpreset(arg)
+
+      if opt in ("-c", "--convert"):
          movie_converter.convert()
 
 

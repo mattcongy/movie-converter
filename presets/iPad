@@ -1,0 +1,23 @@
+{
+    "preset": [
+        {
+            "format": "mp4",
+            "audio": [
+                {
+                    "codec": "aac",
+                    "samplerate": "441OO",
+                    "channels": "2"
+                }
+            ],
+            "video": [
+                {
+                    "codec": "h264",
+                    "width": "720",
+                    "height": "400",
+                    "fps":"15"
+                }
+            ]
+        }
+    ]
+}
+

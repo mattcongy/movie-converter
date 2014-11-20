@@ -1,0 +1,23 @@
+{
+    "preset": [
+        {
+            "format": "avi",
+            "audio": [
+                {
+                    "codec": "aac",
+                    "samplerate": "441OO",
+                    "channels": "2"
+                }
+            ],
+            "video": [
+                {
+                    "codec": "h264",
+                    "width": "320",
+                    "height": "200",
+                    "fps":"10"
+                }
+            ]
+        }
+    ]
+}
+

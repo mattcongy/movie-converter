@@ -1,9 +1,9 @@
 # All movie-converter properties are prefixed 'mc-'
 
 # Folders
-mc_folder_in  = "/home/samsung/Videos/input"
-mc_folder_out = "/home/samsung/Videos/output"
-mc_folder_conv= "/home/samsung/Videos/converted"
+mc_folder_in  = "/Users/matt/Movies/mconverter/in"
+mc_folder_out = "/Users/matt/Movies/mconverter/out"
+mc_folder_conv= "/Users/matt/Movies/mconverter/converted"
 
 # Database path
 mc_db_path = "./db/movieconverter.db"
@@ -11,6 +11,8 @@ mc_db_path = "./db/movieconverter.db"
 # FFMpeg location
 mc_ffmpeg_path = "/location/to/FFMpeg"
 
+# Preset Files
+mc_preset_path = "./presets"
 
 # Video & Audio Presets
 
@@ -33,6 +35,7 @@ mc_video_audio_preset ={
 
 # print configuration variables
 def print_configuration():
-	print(mc_folder_in);
-	print(mc_folder_out);
-	print(mc_ffmpeg_path);
+    print(mc_folder_in)
+    print(mc_folder_out)
+    print(mc_ffmpeg_path)
+    print(mc_preset_path)

@@ -16,11 +16,16 @@ from mconverter import config
 
 class MovieConverter(object):
 	files = []
+
 	"""docstring for MovieConverter"""
 	def __init__(self, infolder,outfolder):
 		super(MovieConverter, self).__init__()
 		self.infolder = infolder
 		self.outfolder = outfolder
+
+	def setPreset(self,preset):
+		self.preset = preset
+		print("preset set")
 
 	def listFiles(self):
 		 onlyfiles = [ f for f in listdir(self.infolder) if isfile(join(self.infolder,f)) ]
@@ -94,8 +99,7 @@ class MovieConverter(object):
 		info = c.probe(mFile.path)
 
 		name_wo_ext = basename(os.path.splitext(mFile.path)[0])
-		ext = config.mc_video_audio_preset['format']
-		print(ext)
+		ext = self.preset['format']
 		out_path = config.mc_folder_out + "/" + name_wo_ext +"." + ext
 		print ("configOut is :", config.mc_folder_out)
 		print ("BaseName is :", name_wo_ext)
@@ -107,7 +111,7 @@ class MovieConverter(object):
 		print (" Converted dir:", config.mc_folder_conv)
 		print ("-----------------------------------------------")
 
-		conv = c.convert(mFile.path,out_path,config.mc_video_audio_preset)
+		conv = c.convert(mFile.path,out_path,self.preset)
 
 		for timecode in conv:
     			print("Converting  ...%2d%%\r " % timecode,end="")
